@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.MessageDigest;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -25,7 +26,8 @@ public class AuthController {
 
     @Autowired
     private TokenUtil tokenUtil;
-    @Autowired UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     private UserService userService;
 
@@ -71,6 +73,7 @@ System.out.println(signInRequest.getPassword());
 
 
     private String getSHA512SecuredPassword(String passwordToHash) throws Exception {
+        System.out.println("password to hash "+passwordToHash);
         String generatedPassword = null;
         MessageDigest md = MessageDigest.getInstance("SHA-512");
         String value = getConfigurationValue("saltSha");
@@ -95,15 +98,24 @@ System.out.println(signInRequest.getPassword());
 
 
         AppUser user;
-      user=   userRepository.findById(userId).get();
-        if (user == null) {
+        System.out.println("my user   "+userId );
+        Optional<AppUser>  userOptional =userRepository.findById(userId);
+        if
+        (!userOptional.isPresent()){
+            System.out.println("user not present");
             throw new BadCredentialsException("1000");
+
         }
-        if (!getSHA512SecuredPassword(password).matches(user.getPassword()) ){
-            throw new BadCredentialsException("1000");
+        else{
+            if (!getSHA512SecuredPassword(password).matches(userOptional.get().getPassword()) ){
+                throw new BadCredentialsException("1000");
+            }
+
+            return new UsernamePasswordAuthenticationToken(userId, password);
         }
 
-        return new UsernamePasswordAuthenticationToken(userId, password);
+
+
     }
 
 

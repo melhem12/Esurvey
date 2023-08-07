@@ -1,5 +1,6 @@
 package com.claimsExpress.Esurvey.security;
 
+import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,16 +8,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 
-
+@Data
 @Entity
 @Table(name="CORE_USER")
-@EntityListeners(AuditingEntityListener.class)
 public class AppUser implements UserDetails {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3961396589345698205L;
 
     @Id
     @Column(name="ID")
     private String userId;
+
+    private String pwd;
+
+
+    @Column(name = "ACTIVE_FLAG")
+    private Integer activeFlag;
 
 
     @Column(name="PWD_ENCRYPTED")

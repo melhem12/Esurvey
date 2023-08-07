@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -18,4 +19,5 @@ public interface UserRepository extends JpaRepository<AppUser, String> {
         List<String> findRolesByUser(String userId);
     @Query(value = " SELECT CONFIG_VALUE from CORE_CONFIGURATION where ID = ?1 ", nativeQuery = true)
     String findConfigByKey(String key);
+
 }
