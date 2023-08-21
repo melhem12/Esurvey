@@ -3,7 +3,7 @@ package com.claimsExpress.Esurvey.requests;
 public class UserStatusRequest {
 private String status ;
 
-public String getStatus() {
+	public String getStatus() {
 	return status;
 }
 

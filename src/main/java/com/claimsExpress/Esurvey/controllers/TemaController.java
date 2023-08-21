@@ -79,7 +79,7 @@ public class TemaController  extends BaseController{
 	public  ResponseEntity<Void> updateGeoStatus (@RequestBody  UserStatusRequest userStatusRequest) {
 
 		try {
-
+			System.out.println("staus====>>>>   "+userStatusRequest.getStatus()  );
 			temaServices.updateGeoStatus(userStatusRequest.getStatus(),getCurrentUser().getUsername());
 			  return new ResponseEntity( HttpStatus.CREATED);
 
@@ -109,7 +109,7 @@ public class TemaController  extends BaseController{
 		
 		System.out.println("66666666666666666666666666666666666666666666666666666666666test");
 
-
+		System.out.printf("GeoLocationRequest=>>>>>>>>> "+geoLocationRequest.getLatitude());
 		try {
 
 			temaServices.updateGeoLocation(geoLocationRequest.getLongitude(),geoLocationRequest.getLatitude(),getCurrentUser().getUsername());

@@ -664,38 +664,38 @@ System.out.println(cs.get().getCarSupkey());
 		                    -> {
 		                    	
 		                    	
-		                    	accidentPicturesResponse.setAppPicturesGeneral(pic.getAppPicturesGeneral());
+		                    	accidentPicturesResponse.setAppPicturesGeneral(pic.getAppPicturesGeneral()!=null);
 		                			
 		                		
 
 		                    	accidentPicturesResponse.setCarsAppAccidentId(pic.getCarsAppAccident().getAccidentId());
 		                    	accidentPicturesResponse.setAppPicturesId(pic.getAppPicturesId());
 		                    
-		                    		accidentPicturesResponse.setAppPicturesCarDamage(pic.getAppPicturesCarDamage());
+		                    		accidentPicturesResponse.setAppPicturesCarDamage(pic.getAppPicturesCarDamage()!=null);
 		                			
 		                		
 		                    	
 		                    	
-		                    		accidentPicturesResponse.setAppPicturesTPPolicy(pic.getAppPicturesTPPolicy());
+		                    		accidentPicturesResponse.setAppPicturesTPPolicy(pic.getAppPicturesTPPolicy()!=null);
 		                			
 		                	
-		                    		accidentPicturesResponse.setAppPicturesDLvr1(pic.getAppPicturesDLvr1());
+		                    		accidentPicturesResponse.setAppPicturesDLvr1(pic.getAppPicturesDLvr1()!=null);
 		                			
 		                	
 		                    	
-		                    		accidentPicturesResponse.setAppPicturesDLvr2(pic.getAppPicturesDLvr2());
+		                    		accidentPicturesResponse.setAppPicturesDLvr2(pic.getAppPicturesDLvr2()!=null);
 		                			
 		                		
 		                    	
 		                    	
-		                    		accidentPicturesResponse.setAppPicturesOptional1(pic.getAppPicturesOptional1());
+		                    		accidentPicturesResponse.setAppPicturesOptional1(pic.getAppPicturesOptional1()!=null);
 		                			
 		                		
 		                  
-		                    		accidentPicturesResponse.setAppPicturesOptional2(pic.getAppPicturesOptional2());
+		                    		accidentPicturesResponse.setAppPicturesOptional2(pic.getAppPicturesOptional2()!=null);
 		                			
 		                		
-		                    		accidentPicturesResponse.setAppPicturesOptional3(pic.getAppPicturesOptional2());
+		                    		accidentPicturesResponse.setAppPicturesOptional3(pic.getAppPicturesOptional2()!=null);
 		                			
 		                		
 
