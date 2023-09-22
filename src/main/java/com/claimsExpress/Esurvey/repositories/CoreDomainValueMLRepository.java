@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @EnableJpaRepositories
@@ -20,6 +21,12 @@ public interface CoreDomainValueMLRepository  extends JpaRepository<CoreDomainVa
 			+ "	FROM CORE_DOMAIN_VALUE_ML "
 			+ "	WHERE CORE_DOMAIN_ID= ?1 AND LNG=  ?2 ", nativeQuery = true)
 	public List<ConstantResponse> getResp(String coreDomainValueId , String lang);
+
+	@Query(value=" SELECT CODE, DESCRIPTION, CORE_DOMAIN_VALUE_ID "
+			+ "	FROM CORE_DOMAIN_VALUE_ML "
+			+ "	WHERE CORE_DOMAIN_ID= ?1 AND LNG=  ?2 AND CODE= ?3 ", nativeQuery = true)
+	public Optional<ConstantResponse> getRespByCode(String coreDomainValueId , String lang, String code );
+
 	
 	@Query(value=" SELECT PART_ID,PART_DESCRIPTION,PART_ARABIC_DESC FROM CARS_PARTS WHERE PART_MET='PANEL' AND PART_TYPE='BODY' AND SUBSTR(PART_COMBINATION,1,2)='P1' ORDER BY 2 ", nativeQuery = true)
 	

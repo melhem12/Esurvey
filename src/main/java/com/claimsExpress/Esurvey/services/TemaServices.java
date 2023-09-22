@@ -8,11 +8,21 @@ import com.claimsExpress.Esurvey.requests.CarsAppAccidentRequest;
 import com.claimsExpress.Esurvey.requests.CarsAppBodlyRequest;
 import com.claimsExpress.Esurvey.requests.CarsAppDamagePartsRequest;
 import com.claimsExpress.Esurvey.responses.*;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.util.JRSaver;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -178,6 +188,9 @@ db.carAccidentrepository.save(carsAppAccident);
 
 				
 			}
+
+
+
 			if(cars.getAccdentStatus().equals("completed")) {
 				CarAccidentResponse carAccidentResponse = new CarAccidentResponse();
 				carAccidentResponse.setAccidentId(cars.getAccidentId());
@@ -405,12 +418,50 @@ db.carAccidentrepository.save(carsAppAccident);
 
 	public void updateAccidentStatus(String status,String accidentId, String username) {
 		System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"+status);
+
+
+
+
+
+
+
+
+
+
+
+
+//		// Save the PDF content to a file
+//		try {
+//			FileUtils.writeByteArrayToFile(new File("item-report.pdf"), reportContent);
+//		} catch (IOException e) {
+//			throw new RuntimeException(e);
+//		}
+//
+
+
+
+
+
+
+
+
 		if(status.equals("accepted")) {
 			System.out.println("lllllllllllllll");
 
 			 String randomPin ="1234";
-			 
-			 
+
+
+
+
+
+
+
+
+
+
+
+
+
 			 
 			 
 				Optional<CarsAppAccident> accOptional= db.carAccidentrepository.findById(accidentId);
@@ -451,10 +502,221 @@ System.out.println(cs.get().getCarSupkey());
 		                    -> {
 		                    	
 		               acc.setAccdentStatus(status);
-		               
-		               db.carAccidentrepository.save(acc);
-		               
-		             	Optional <CarsSupplier> cs = db.carsSupplierRepository.findBySupplierCoreUserId(username);
+
+
+
+
+
+
+
+
+
+
+
+						CarsAppAccident carsAppAccident=        db.carAccidentrepository.save(acc);
+
+
+
+
+
+
+
+
+
+						JasperReport jasperReport;
+
+						try {
+							System.out.println("begin ................................");
+
+							jasperReport = (JasperReport)
+									JRLoader.loadObject(ResourceUtils.getFile("C:\\coreReports\\aropeTema.jasper"));
+						} catch (FileNotFoundException | JRException e) {
+							try {
+								File file = ResourceUtils.getFile("C:\\coreReports\\aropeTema.jrxml");
+								System.out.println("read   ................");
+								jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+								JRSaver.saveObject(jasperReport, "C:\\coreReports\\aropeTema.jasper");
+							} catch (FileNotFoundException | JRException ex) {
+								throw new RuntimeException(e);
+							}
+						}
+						//		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(items);
+
+						Map<String, Object> parameters = new HashMap<>();
+
+						parameters.put("insuredName", "Fathi");
+
+						JasperPrint jasperPrint = null;
+						byte[] reportContent;
+
+						try {
+							// Sample data - Replace with your actual data source
+							List<Map<String, Object>> dataList = new ArrayList<>();
+
+							Map<String, Object> data1 = new HashMap<>();
+							data1.put("insuredName", carsAppAccident.getAccidentCustomerName());
+							data1.put("phoneNumber", carsAppAccident.getAccidentCustomerPhone());
+							data1.put("policyNumber", carsAppAccident.getAccidentPolicyNumber());
+
+
+
+//			data1.put("reportDate", "2023-09-14");
+							data1.put("reportDetails", carsAppAccident.getAccidentDetails());
+
+							data1.put("policyCode",carsAppAccident.getAccidentPolicyNumber());
+							data1.put("vehicleDetails", "Sample vehicle details");
+							data1.put("pasNumber", "12345");
+							data1.put("requestSendingDate", new java.util.Date());
+							data1.put("accidentAddress", carsAppAccident.getAccidentlocation());
+							data1.put("accidentCallerName", carsAppAccident.getAccidentCallerName());
+							data1.put("requestNumber", "REQ123");
+							data1.put("expertName",carsAppAccident.getAccidentExpertName());
+
+
+
+
+
+
+
+
+//							Optional<CarsAppAccidentConditions> carsAppAccidentConditions	=	db.carsAppAccidentConditionsRepository.findByCarsAppAccident(carsAppAccident.getAccidentId());
+//
+//							carsAppAccidentConditions.ifPresent(
+//									value -> System.out.println("Found: " + value));
+//							carsAppAccidentConditions.ifPresent(
+//									(conditions)
+//											-> {
+//
+//
+//										conditions.setAccidentConditionsDoubts(accidentCoditionsRequest.getAccidentConditionsDoubts());
+//										conditions.setAccidentConditionsResponsib(accidentCoditionsRequest.getAccidentConditionsResponsib());
+//										conditions.setAccidentConditionsTPFDamage(accidentCoditionsRequest.getAccidentConditionsTPFDamage());
+//										conditions.setAccidentConditiosTPCount(accidentCoditionsRequest.getAccidentConditiosTPCount());
+//
+//									});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+							Optional<CarsAppAccidentConditions> carsAppAccidentConditions	=	db.carsAppAccidentConditionsRepository.findByCarsAppAccident(carsAppAccident.getAccidentId());
+
+
+							carsAppAccidentConditions.ifPresent(
+									(conditions)
+											-> {
+
+										System.out.println("fetched///////////////////////////");
+										data1.put("responsibility", conditions.getAccidentConditionsResponsib());
+										Optional <ConstantResponse> v= db.coreDomainValueMLRepository.getRespByCode("APP_DOUBTS", "ar",conditions.getAccidentConditionsDoubts());
+										System.out.println(v.get().getDescription()+"////////////////////sadsda");
+										data1.put("doubts",v.get().getDescription());
+										data1.put("thirdParties",conditions.getAccidentConditionsTPFDamage());
+
+
+
+									});
+
+
+
+
+
+							data1.put("caseAcceptedDate", new java.util.Date());
+							data1.put("arrivedDate", new java.util.Date());
+							data1.put("reportSendDate", new java.util.Date());
+							data1.put("photosSentDate", new java.util.Date());
+							data1.put("severity", "Low");
+//							data1.put("thirdParties", "Sample third parties");
+							data1.put("numberOfPhotos", "5");
+							data1.put("voiceRecorded", "true");
+							data1.put("damageDetails", "Sample damage details");
+							data1.put("expertPhoneNumber", "987-654-3210");
+							data1.put("accidentContactNumber", "555-555-5555");
+							data1.put("passengersMinorInjuriesNumberTp", "2");
+							data1.put("passengersMinorInjuriesNumberIns", "1");
+							data1.put("passengersMajorInjuriesNumberTp", "0");
+							data1.put("passengersMajorInjuriesNumberIns", "0");
+							data1.put("deathNumberTp", "0");
+							data1.put("deathNumberIns", "0");
+							data1.put("accidentDetails", "Sample accident details");
+							data1.put("arrivedLocation", "Sample arrived location");
+//							data1.put("temaPhotos", "Sample tema photos");
+
+
+
+
+
+
+							// Add more data fields as needed
+
+							// Add more data fields here
+							dataList.add(data1);
+
+							// Create a JRBeanCollectionDataSource to provide the data
+							JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dataList);
+							System.out.println(jasperReport.getName());
+							jasperReport.setProperty("net.sf.jasperreports.awt.ignore.missing.font", "true");
+							jasperReport.setProperty("net.sf.jasperreports.default.font.name", "ArialFontFamily");
+							jasperReport.setProperty("net.sf.jasperreports.default.pdf.font.name", "ArialFontFamily");
+							jasperReport.setProperty("net.sf.jasperreports.default.pdf.embedded", "true");
+							//	jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+							try {
+								jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
+
+							}
+							catch (Exception e){
+								System.out.println(e.toString());
+							}
+							System.out.println(jasperReport.getName());
+							JasperExportManager.exportReportToPdfFile(jasperPrint, "output_report.pdf");
+
+							//jasperPrint = JasperFillManager.fillReport(jasperReport, parameters);
+
+							reportContent = JasperExportManager.exportReportToPdf(jasperPrint);
+
+						} catch (JRException e) {
+							System.out.println(e);
+							throw new RuntimeException(e);
+						}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+						Optional <CarsSupplier> cs = db.carsSupplierRepository.findBySupplierCoreUserId(username);
 
 			               Optional<GeoExpert> geoOtional= db.geoExpertRepository.findByGeoExpertId(cs.get().getCarSupkey());
 		           	geoOtional.ifPresent(
